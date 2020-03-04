@@ -17,6 +17,7 @@ use crate::bindgen::library::Library;
 use crate::bindgen::mangle;
 use crate::bindgen::monomorph::Monomorphs;
 use crate::bindgen::rename::{IdentifierType, RenameRule};
+use crate::bindgen::reserved;
 use crate::bindgen::utilities::find_first_some;
 use crate::bindgen::writer::{ListType, Source, SourceWriter};
 
@@ -721,10 +722,12 @@ impl Source for Enum {
             {
                 let mut first = true;
                 for variant in &self.variants {
-                    let (field_name, body) = match variant.body {
-                        Some((ref field_name, ref body)) => (field_name, body),
+                    let (mut field_name, body) = match variant.body {
+                        Some((ref field_name, ref body)) => (field_name.clone(), body),
                         None => continue,
                     };
+
+                    reserved::escape(&mut field_name);
 
                     if !first {
                         out.new_line();
