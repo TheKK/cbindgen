@@ -32,26 +32,8 @@ fn internal_mangle_name(name: &str, generic_values: &[Type], last_in_parent: boo
         }
 
         let is_last = i == generic_values.len() - 1;
-        match *ty {
-            Type::Path(ref generic) => {
-                mangled.push_str(&internal_mangle_name(
-                    generic.export_name(),
-                    generic.generics(),
-                    last_in_parent && is_last,
-                ));
-            }
-            Type::Primitive(ref primitive) => {
-                mangled.push_str(primitive.to_repr_rust());
-            }
-            Type::MutRef(..)
-            | Type::Ref(..)
-            | Type::ConstPtr(..)
-            | Type::Ptr(..)
-            | Type::Array(..)
-            | Type::FuncPtr(..) => {
-                panic!("Unable to mangle generic parameter {:?} for '{}'", ty, name);
-            }
-        }
+
+        mangled.push_str(&get_mangled_name(ty, last_in_parent, is_last));
 
         // Skip writing the trailing '>' mangling when possible
         if is_last && !last_in_parent {
@@ -60,6 +42,23 @@ fn internal_mangle_name(name: &str, generic_values: &[Type], last_in_parent: boo
     }
 
     mangled
+}
+
+fn get_mangled_name(ty: &Type, last_in_parent: bool, is_last: bool) -> String {
+    match *ty {
+        Type::Path(ref generic) => internal_mangle_name(
+            generic.export_name(),
+            generic.generics(),
+            last_in_parent && is_last,
+        ),
+        Type::Primitive(ref primitive) => primitive.to_repr_rust().to_owned(),
+        Type::ConstPtr(ref ptr_ty) => {
+            "ConstPtr_".to_owned() + &get_mangled_name(ptr_ty, last_in_parent, is_last)
+        }
+        Type::MutRef(..) | Type::Ref(..) | Type::Ptr(..) | Type::Array(..) | Type::FuncPtr(..) => {
+            panic!("Unable to mangle type {:?}", ty);
+        }
+    }
 }
 
 #[test]
