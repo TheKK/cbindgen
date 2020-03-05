@@ -209,9 +209,15 @@ impl EnumVariant {
 impl Source for EnumVariant {
     fn write<F: Write>(&self, config: &Config, out: &mut SourceWriter<F>) {
         let condition = self.cfg.to_condition(config);
+        let escaped_export_name = {
+            let mut name = self.export_name.to_owned();
+            reserved::escape(&mut name);
+            name
+        };
+
         condition.write_before(config, out);
         self.documentation.write(config, out);
-        write!(out, "{}", self.export_name);
+        write!(out, "{}", escaped_export_name);
         if let Some(discriminant) = self.discriminant {
             write!(out, " = {}", discriminant);
         }
