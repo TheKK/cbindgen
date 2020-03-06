@@ -428,8 +428,9 @@ impl Item for Enum {
         }
 
         for variant in &mut self.variants {
-            if let Some((_, ref mut body)) = variant.body {
+            if let Some((ref mut field_name, ref mut body)) = variant.body {
                 body.rename_for_config(config);
+                reserved::escape(field_name);
             }
         }
 
@@ -728,12 +729,10 @@ impl Source for Enum {
             {
                 let mut first = true;
                 for variant in &self.variants {
-                    let (mut field_name, body) = match variant.body {
-                        Some((ref field_name, ref body)) => (field_name.clone(), body),
+                    let (field_name, body) = match variant.body {
+                        Some((ref field_name, ref body)) => (field_name, body),
                         None => continue,
                     };
-
-                    reserved::escape(&mut field_name);
 
                     if !first {
                         out.new_line();
