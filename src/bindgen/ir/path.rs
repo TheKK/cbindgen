@@ -5,6 +5,9 @@
 use std::cmp::Ordering;
 use std::fmt;
 
+use syn::ext::IdentExt;
+use syn::Ident;
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Path {
     name: String,
@@ -16,6 +19,12 @@ impl Path {
         String: From<T>,
     {
         Self { name: name.into() }
+    }
+
+    pub fn new_from_ident(ident: &Ident) -> Self {
+        Self {
+            name: ident.unraw().to_string(),
+        }
     }
 
     pub fn name(&self) -> &str {
