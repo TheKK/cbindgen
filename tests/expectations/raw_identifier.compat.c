@@ -19,18 +19,18 @@ typedef enum {
 
 typedef struct {
   Foo _0;
-} r#A_Body;
+} A_Body;
 
 typedef struct {
   Foo r#c_a;
   int32_t r#c_b;
-} r#C_Body;
+} C_Body;
 
 typedef struct {
   TaggedUnion_Tag tag;
   union {
-    r#A_Body r#_a;
-    r#C_Body r#_c;
+    A_Body r#_a;
+    C_Body r#_c;
   };
 } TaggedUnion;
 

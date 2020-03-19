@@ -5,6 +5,7 @@
 use std::io::Write;
 
 use syn;
+use syn::ext::IdentExt;
 
 use crate::bindgen::config::{Config, Language};
 use crate::bindgen::declarationtyperesolver::DeclarationTypeResolver;
@@ -101,7 +102,7 @@ impl EnumVariant {
         let body = match variant.fields {
             syn::Fields::Unit => None,
             syn::Fields::Named(ref fields) => {
-                let path = Path::new(format!("{}_Body", variant.ident));
+                let path = Path::new(format!("{}_Body", variant.ident.unraw()));
                 Some(Struct::new(
                     path,
                     generic_params,
@@ -117,7 +118,7 @@ impl EnumVariant {
                 ))
             }
             syn::Fields::Unnamed(ref fields) => {
-                let path = Path::new(format!("{}_Body", variant.ident));
+                let path = Path::new(format!("{}_Body", variant.ident.unraw()));
                 Some(Struct::new(
                     path,
                     generic_params,
