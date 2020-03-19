@@ -24,8 +24,15 @@ pub enum r#Foo {
 	r#Bar,
 }
 
+#[repr(C)]
+pub enum r#TaggedUnion {
+	r#A(r#Foo),
+	r#B,
+	r#C{r#c_a: r#Foo, r#c_b: i32},
+}
+
 #[no_mangle]
-pub extern "C" fn r#enum_root(foo: r#Foo) {}
+pub extern "C" fn r#enum_root(foo: r#Foo, tagged: r#TaggedUnion) {}
 
 // Function
 #[no_mangle]

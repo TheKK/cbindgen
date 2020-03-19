@@ -11,6 +11,29 @@ typedef enum {
 
 typedef struct Node_Foo Node_Foo;
 
+typedef enum {
+  r#A,
+  r#B,
+  r#C,
+} TaggedUnion_Tag;
+
+typedef struct {
+  Foo _0;
+} r#A_Body;
+
+typedef struct {
+  Foo r#c_a;
+  int32_t r#c_b;
+} r#C_Body;
+
+typedef struct {
+  TaggedUnion_Tag tag;
+  union {
+    r#A_Body r#_a;
+    r#C_Body r#_c;
+  };
+} TaggedUnion;
+
 typedef struct {
   Foo r#raw_ident_field_x;
 } RawIdentStruct;
@@ -32,7 +55,7 @@ extern Foo MUT_GLOBAL_RAW_IDENT;
 
 extern void async(void);
 
-void enum_root(Foo foo);
+void enum_root(Foo foo, TaggedUnion tagged);
 
 void generic_path_root(const Node_Foo *node);
 
