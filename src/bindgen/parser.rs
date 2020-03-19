@@ -478,7 +478,7 @@ impl Parse {
                                     binding_crate_name,
                                     crate_name,
                                     mod_cfg,
-                                    &Path::new(type_name.to_string()),
+                                    &Path::new_from_ident(type_name),
                                     method,
                                 )
                             }
@@ -541,7 +541,7 @@ impl Parse {
                     );
                     return;
                 }
-                let path = Path::new(escape_raw_identifier(function.sig.ident.to_string()));
+                let path = Path::new_from_ident(&function.sig.ident);
                 match Function::load(path, None, &function.sig, true, &function.attrs, mod_cfg) {
                     Ok(func) => {
                         info!("Take {}::{}.", crate_name, &function.sig.ident);
@@ -720,7 +720,7 @@ impl Parse {
                 return;
             }
 
-            let path = Path::new(item.ident.to_string());
+            let path = Path::new_from_ident(&item.ident);
             match Constant::load(
                 path,
                 mod_cfg,
@@ -778,7 +778,7 @@ impl Parse {
             return;
         }
 
-        let path = Path::new(item.ident.to_string());
+        let path = Path::new_from_ident(&item.ident);
         match Constant::load(path, mod_cfg, &item.ty, &item.expr, &item.attrs, None) {
             Ok(constant) => {
                 info!("Take {}::{}.", crate_name, &item.ident);
@@ -854,7 +854,7 @@ impl Parse {
             }
             Err(msg) => {
                 info!("Take {}::{} - opaque ({}).", crate_name, &item.ident, msg);
-                let path = Path::new(item.ident.to_string());
+                let path = Path::new_from_ident(&item.ident);
                 self.opaque_items.try_insert(
                     OpaqueItem::load(path, &item.generics, &item.attrs, mod_cfg).unwrap(),
                 );
@@ -878,7 +878,7 @@ impl Parse {
             }
             Err(msg) => {
                 info!("Take {}::{} - opaque ({}).", crate_name, &item.ident, msg);
-                let path = Path::new(item.ident.to_string());
+                let path = Path::new_from_ident(&item.ident);
                 self.opaque_items.try_insert(
                     OpaqueItem::load(path, &item.generics, &item.attrs, mod_cfg).unwrap(),
                 );
@@ -909,7 +909,7 @@ impl Parse {
             }
             Err(msg) => {
                 info!("Take {}::{} - opaque ({}).", crate_name, &item.ident, msg);
-                let path = Path::new(item.ident.to_string());
+                let path = Path::new_from_ident(&item.ident);
                 self.opaque_items.try_insert(
                     OpaqueItem::load(path, &item.generics, &item.attrs, mod_cfg).unwrap(),
                 );
@@ -927,7 +927,7 @@ impl Parse {
             }
             Err(msg) => {
                 info!("Take {}::{} - opaque ({}).", crate_name, &item.ident, msg);
-                let path = Path::new(item.ident.to_string());
+                let path = Path::new_from_ident(&item.ident);
                 self.opaque_items.try_insert(
                     OpaqueItem::load(path, &item.generics, &item.attrs, mod_cfg).unwrap(),
                 );

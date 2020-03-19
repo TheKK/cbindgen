@@ -65,7 +65,7 @@ impl Struct {
             }
         };
 
-        let path = Path::new(item.ident.to_string());
+        let path = Path::new_from_ident(&item.ident);
 
         // Ensure we can safely represent the struct given the configuration.
         if let Some(align) = repr.align {

@@ -179,7 +179,8 @@ impl Literal {
                 ref fields,
                 ..
             }) => {
-                let struct_name = path.segments[0].ident.to_string();
+                let struct_path = Path::new_from_ident(&&path.segments[0].ident);
+                let struct_name = struct_path.name().to_owned();
                 let mut field_map = HashMap::<String, Literal>::default();
                 for field in fields {
                     let ident = match field.member {
@@ -191,7 +192,7 @@ impl Literal {
                     field_map.insert(key, value);
                 }
                 Ok(Literal::Struct {
-                    path: Path::new(struct_name.clone()),
+                    path: struct_path,
                     export_name: struct_name,
                     fields: field_map,
                 })

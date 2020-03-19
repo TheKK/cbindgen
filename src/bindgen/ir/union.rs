@@ -50,7 +50,7 @@ impl Union {
             layout_config.ensure_safe_to_represent(&align)?;
         }
 
-        let path = Path::new(item.ident.to_string());
+        let path = Path::new_from_ident(&item.ident);
 
         let (fields, tuple_union) = {
             let out = item

@@ -277,7 +277,7 @@ impl Enum {
             return Err("Enum is marked with #[repr(align(...))] or #[repr(packed)].".to_owned());
         }
 
-        let path = Path::new(item.ident.to_string());
+        let path = Path::new_from_ident(&item.ident);
         let generic_params = GenericParams::new(&item.generics);
 
         let mut variants = Vec::new();

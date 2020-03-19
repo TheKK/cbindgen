@@ -20,7 +20,7 @@ impl GenericParams {
                 .iter()
                 .filter_map(|x| match *x {
                     syn::GenericParam::Type(syn::TypeParam { ref ident, .. }) => {
-                        Some(Path::new(ident.to_string()))
+                        Some(Path::new_from_ident(&ident))
                     }
                     _ => None,
                 })
@@ -125,9 +125,8 @@ impl GenericPath {
             path
         );
         let last_segment = path.segments.last().unwrap();
-        let name = last_segment.ident.to_string();
 
-        let path = Path::new(name);
+        let path = Path::new_from_ident(&last_segment.ident);
         let phantom_data_path = Path::new("PhantomData");
         if path == phantom_data_path {
             return Ok(Self::new(path, Vec::new()));

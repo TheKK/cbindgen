@@ -34,7 +34,7 @@ impl Static {
         }
 
         Ok(Static::new(
-            Path::new(item.ident.to_string()),
+            Path::new_from_ident(&item.ident),
             ty.unwrap(),
             item.mutability.is_some(),
             Cfg::append(mod_cfg, Cfg::load(&item.attrs)),
