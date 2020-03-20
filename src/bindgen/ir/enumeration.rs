@@ -85,7 +85,7 @@ impl EnumVariant {
                 if let Some(mut ty) = Type::load(&field.ty)? {
                     ty.replace_self_with(self_path);
                     res.push((
-                        match field.ident {
+                        match field.ident.as_ref().map(IdentExt::unraw) {
                             Some(ref ident) => ident.to_string(),
                             None => i.to_string(),
                         },
@@ -99,10 +99,11 @@ impl EnumVariant {
         }
 
         let variant_cfg = Cfg::append(mod_cfg, Cfg::load(&variant.attrs));
+        let variant_unrawed_ident = variant.ident.unraw();
         let body = match variant.fields {
             syn::Fields::Unit => None,
             syn::Fields::Named(ref fields) => {
-                let path = Path::new(format!("{}_Body", variant.ident.unraw()));
+                let path = Path::new(format!("{}_Body", variant_unrawed_ident));
                 Some(Struct::new(
                     path,
                     generic_params,
@@ -118,7 +119,7 @@ impl EnumVariant {
                 ))
             }
             syn::Fields::Unnamed(ref fields) => {
-                let path = Path::new(format!("{}_Body", variant.ident.unraw()));
+                let path = Path::new(format!("{}_Body", variant_unrawed_ident));
                 Some(Struct::new(
                     path,
                     generic_params,
@@ -136,12 +137,12 @@ impl EnumVariant {
         };
 
         Ok(EnumVariant::new(
-            variant.ident.to_string(),
+            variant_unrawed_ident.to_string(),
             discriminant,
             body.map(|body| {
                 (
                     RenameRule::SnakeCase.apply_to_pascal_case(
-                        &format!("{}", variant.ident),
+                        &format!("{}", variant_unrawed_ident),
                         IdentifierType::StructMember,
                     ),
                     body,

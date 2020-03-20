@@ -6,15 +6,15 @@
 #define CONST_RAW_ID 42
 
 typedef enum {
-  r#Bar,
+  Bar,
 } Foo;
 
 typedef struct Node_Foo Node_Foo;
 
 typedef enum {
-  r#A,
-  r#B,
-  r#C,
+  A,
+  B,
+  C,
 } TaggedUnion_Tag;
 
 typedef struct {
@@ -22,15 +22,15 @@ typedef struct {
 } A_Body;
 
 typedef struct {
-  Foo r#c_a;
-  int32_t r#c_b;
+  Foo c_a;
+  int32_t c_b;
 } C_Body;
 
 typedef struct {
   TaggedUnion_Tag tag;
   union {
-    A_Body r#_a;
-    C_Body r#_c;
+    A_Body a;
+    C_Body c;
   };
 } TaggedUnion;
 
