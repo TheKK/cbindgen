@@ -5,6 +5,7 @@
 use std::io::Write;
 
 use syn;
+use syn::ext::IdentExt;
 
 use crate::bindgen::config::{Config, Language, LayoutConfig};
 use crate::bindgen::declarationtyperesolver::DeclarationTypeResolver;
@@ -656,6 +657,7 @@ impl SynFieldHelpers for syn::Field {
         let ident = self
             .ident
             .as_ref()
+            .map(IdentExt::unraw)
             .ok_or_else(|| "field is missing identifier".to_string())?
             .clone();
         let converted_ty = Type::load(&self.ty)?;

@@ -35,14 +35,14 @@ typedef struct {
 } TaggedUnion;
 
 typedef struct {
-  Foo r#raw_ident_field_x;
+  Foo raw_ident_field_x;
 } RawIdentStruct;
 
 typedef Foo OtherFoo;
 
 typedef union {
-  Foo r#raw_ident_union_field_a;
-  Foo r#raw_ident_union_field_b;
+  Foo raw_ident_union_field_a;
+  Foo raw_ident_union_field_b;
 } RawIdentUnion;
 
 #ifdef __cplusplus
