@@ -61,7 +61,7 @@ void generic_path_root(const Node_Foo *node);
 
 void raw_ident_function(void);
 
-void raw_ident_function_argument(int32_t r#param);
+void raw_ident_function_argument(int32_t param);
 
 void struct_root(const RawIdentStruct *s);
 

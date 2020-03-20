@@ -5,6 +5,7 @@
 use std::io::Write;
 
 use syn;
+use syn::ext::IdentExt;
 
 use crate::bindgen::cdecl;
 use crate::bindgen::config::{Config, Layout};
@@ -294,7 +295,7 @@ impl SynFnArgHelpers for syn::FnArg {
                         Some(x) => x,
                         None => return Ok(None),
                     };
-                    Ok(Some((ident.to_string(), ty)))
+                    Ok(Some((ident.unraw().to_string(), ty)))
                 }
                 _ => Err("Parameter has an unsupported type.".to_owned()),
             },
